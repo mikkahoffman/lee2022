@@ -1,9 +1,9 @@
 ---
-title: "Replication of The development of digital ownership in children by Young-eun Lee & Susan A. Gelman (2022, Journal of Experimental Child Psychology)"
+title: "Replication of Study by Young-eun Lee & Susan A. Gelman (2022, Journal of Experimental Child Psychology)"
 author: "Mikka Hoffman (m5hoffman@ucsd.edu)"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
-  html:
+  pdf:
     toc: true
     toc_depth: 3
 ---
