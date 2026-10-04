@@ -21,6 +21,7 @@ All data and protocols are available at <https://osf.io/3g2j4/>, including examp
 Since the stimuli used in this experiment were written vignettes presented via Qualtrics, I am wondering now if this procedure will still lend itself well to coding a javascript experiment, since that is something I would like to gain experience with. I also see a potential challenge with replicating the stimuli and procedures exactly, since only one example of stimuli is posted on OSF. I anticipate that I may have to reach out to the authors for their full procedure and materials, or recreate them myself. 
 
 Link to repository: <https://github.com/mikkahoffman/lee2022.git>
+Link to paper: <https://github.com/mikkahoffman/lee2022/blob/b99ec0bc5b82c91a985fb262e186f7811e3d0c25/original_paper/Lee%26Gelman_2022.pdf> 
 
 ## Methods
 
