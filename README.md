@@ -1,4 +1,3 @@
-# Replication Project Template
+# Replication Project - mikka_lee2022
 
-This is a GitHub template to use for replications projects in PSYCH 201a at UCSD. Create a new repo using this as a template in order to use it.
-
+This repo is a project aiming to replicate Lee and Gelman (2022) for Psych 201 at UCSD. Here you can find the original paper and replication report. 
