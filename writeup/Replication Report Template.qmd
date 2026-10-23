@@ -46,17 +46,19 @@ The planned sample size is 60 adult participants. As the sample will be collecte
 
 "Adults read six scenarios in total (music, movie, book, photo of nature, drawing, and game) in orders randomized by Qualtrics, with three items presented in a digital format and the other three items presented in a physical format. In addition, the types of items shown in a digital versus physical format were counterbalanced." For example, for digital format scenarios, participants will read, "[X] finds that a book was saved on a shared computer in the room. [X] is the only person in the room. No one will know if [X] downloads the book on her computer. Is it okay or not okay for [X] to download the book on her computer? How okay or not okay is it?” In the physical version, the story is identical except that the item is shown as a physical object (e.g., "[X] finds that a book was left next to a shared computer in the room. [X] is the only person in the room. No one will know if [X] puts the book in her bag. Is it okay or not okay for [X] to put the book in her bag? How okay or not okay is it?”). In the original study, stimuli were presented and randomized by Qualtrics; in this study, stimuli will be presented and randomized via a web-based JsPsych experiment. 
 
+I will also add in two additional new vignettes that will be similarly counterbalanced for format and randomly presented (so participants in this study will see 8 vignettes in total). These new items will be a photograph of a preschool-age child and a photograph of an adult (to probe ideas of digital privacy for children versus adults).  
+
 ### Procedure
 
 <!-- Can quote directly from original article - just put the text in quotations and note that this was followed precisely. Or, quote directly and just point out exceptions to what was described in the original article. --> 
 
-After providing informed consent, participants will see six stories presented in random order. After reading each story, they will rate how okay or not okay the action was on a 5-point Likert scale with corresponding thumbs up/thumbs down images ("from -2 being totally not okay to +2 being totally okay"). They will also answer an open-ended question explaining each of their answers (“What made you think so? Describe your reason below.”). 
+After providing informed consent, participants will see eight stories presented in random order. After reading each story, they will rate how okay or not okay the action was on a 5-point Likert scale with corresponding thumbs up/thumbs down images ("from -2 being totally not okay to +2 being totally okay"). They will also answer an open-ended question explaining each of their answers (“What made you think so? Describe your reason below.”). 
 
 ### Analysis Plan
 
 <!-- Can also quote directly, though it is less often spelled out effectively for an analysis strategy section. The key is to report an analysis strategy that is as close to the original - data cleaning rules, data exclusion rules, covariates, etc. - as possible. --> 
 
-Following the exclusion criteria from the original study, participants will be excluded if they do not complete all 6 types of scenarios, or if their IP address is not based in the U.S. 
+Following the exclusion criteria from the original study, participants will be excluded if they do not complete all types of scenarios, or if their IP address is not based in the U.S. 
 
 "Answers to open-ended questions from all 60 adult participants were also coded by two independent coders" - in this study, open-ended questions will likely be coded by one coder (me) due to resource constraints. "We predetermined the categories for coding explanations based on pilot testing with adults." Coding categories are specified in Table 1 of the original paper and will be used to code open-ended questions in this study. 
 
@@ -66,7 +68,9 @@ Raw data will be cleaned to remove identifiable and irrelevant data and will yie
 
 "All statistical analyses were conducted with R statistical software (R Version 4.1.1; R Core Team, 2021). We analyzed ratings with a linear mixed model (LMM) using the R package ‘‘lme4” (Bates et al., 2015) and analyzed justifications with a generalized linear mixed model (GLMM) using the R package ‘‘glmmTMB” (Brooks et al., 2017). Our full LMMs on ratings included format type, item type, children’s age in months [not relevant for this study], and all interactions among the variables as fixed effects and participant identity (ID) as a random effect. Our full GLMMs on justification included format type, coding category, and the interaction between the variables as fixed effects and participant ID as a random effect. We first compared the full model with a null model that included only participant ID as a random intercept. If the full model provided a significantly better fit to the data than the null model, we then conducted hypothesis-driven tests to examine the role of individual predictors by sequentially dropping them from the full model and assessed changes in model fit using likelihood ratio tests (LRTs)." 
 
-Additional analyses: I will also conduct follow-up one-sample t tests (two-tailed) "to examine whether ratings differed significantly from a neutral valence of 0." I also will analyze the justifications provided using the plan detailed above. 
+To replicate the original analyses, these analyses will be run just on the original 6 vignettes. 
+
+Additional analyses: I will also conduct follow-up one-sample t tests (two-tailed) "to examine whether ratings differed significantly from a neutral valence of 0." I also will analyze the justifications provided using the plan detailed above. I will also repeat the analyses detailed above with the full 8 vignettes to explore the effect of the two new vignettes. 
 
 ### Differences from Original Study
 
@@ -108,10 +112,10 @@ Data preparation following the analysis plan.
 # data <- read.csv(file = "data.csv", header = TRUE) # import full data
 
 #### Data exclusion / filtering
-#exclude participants who did not rate all six scenarios or who are not US based 
+#exclude participants who did not rate all scenarios or who are not US based 
   
 #### Prepare data for analysis - create columns etc.
-# create one data frame for ratings, selecting only subject ID, item, format.type, and response 
+# create one data frame for ratings, selecting only subject ID, item, format.type, and response with 6 original vignettes, and one with all 8 vignettes
 
 # create another data frame for justifications, including subject ID, format, item, category, answer, and code
 ```
