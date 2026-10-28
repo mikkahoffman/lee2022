@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>lee&gelman2022 replication</title>
+  <script src="https://unpkg.com/jspsych@8.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.3"></script> 
+  <script src="https://unpkg.com/@jspsych/plugin-survey-text@2.1.1"></script>
+  <!-- the DataPipe extension, which saves our data -->
+  <script src="https://unpkg.com/@jspsych/extension-pipe@0.2.0"></script>
+  <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body></body>
+<script>
+
+  // initialize jsPsych
+  var jsPsych = initJsPsych({
+    on_finish: function () {
+      jsPsych.data.displayData();
+    },
+    // send the data to DataPipe
+    extensions: [
+      {
+        type: jsPsychExtensionPipe,
+        params: {
+          experiment_id: "9VisdyYm0Nf0",
+          filename: function () {
+            return subject_id + ".csv";
+          }
+        }
+      }
+    ]
+  });
+
+  // give each participant a random ID. Their data file is named after it.
+  var subject_id = jsPsych.randomization.randomID(10);
+
+  // create timeline
+  var timeline = [];
+
+  // define welcome message trial
+  var welcome = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: "Welcome to the experiment. Press any key to begin."
+  };
+  timeline.push(welcome);
+
+  // define the instructions trial (needs to be edited)
+  var instructions = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+      <p>In this experiment, you will see several stories.</p>
+      <p>Please rate how okay or not okay each action is.</p>
+      <p>Press any key to begin.</p>
+    `
+  };
+  timeline.push(instructions);
+
+  //define likert scale 
+var likert_scale = [
+  "Totally not okay", 
+  "Not okay", 
+  "In between", 
+  "Okay", 
+  "Totally okay"
+];
+
+//sample stimuli with likert scale
+var questions_list = [
+    {question: "<p>Jordan finds that an e-book was saved on a shared computer in the room. Jordan is the only person in the room. No one will know if Jordan downloads the e-book on his laptop. Is it okay or not okay for Jordan to download the e-book? How okay or not okay is it?</p>", name: 'Book_digital'},
+    {question: "<p>Peyton finds that a photo of nature was saved on a shared computer in the room. Peyton is the only person in the room. No one will know if Peyton downloads the photo on his laptop. Is it okay or not okay for Peyton to download the photo? How okay or not okay is it?</p>", name: 'Photo_digital'},
+    {question: "<p>Robin finds that a fishing game was saved on a shared computer in the room. Robin is the only person in the room. No one will know if Robin downloads the fishing game on her laptop. Is it okay or not okay for Robin to download the fishing game? How okay or not okay is it?</p>", name: 'Game_digital'},
+    {question: "<p>Blake finds that a drawing on a page from a sketchbook was left next to a shared computer in the room. Blake is the only person in the room. No one will know if Blake takes the drawing with her. Is it okay or not okay for Blake to take the drawing? How okay or not okay is it?</p>", name: 'Drawing_nondigital'},
+    {question: "<p>Jesse finds that a music CD was left next to a shared computer in the room. Jesse is the only person in the room. No one will know if Jesse takes the music CD with her. Is it okay or not okay for Jesse to take the music CD? How okay or not okay is it?</p>", name: 'Music_nondigital'},
+    {question: "<p>Sammy finds that a videotape of a movie was left next to a shared computer in the room. Sammy is the only person in the room. No one will know if Sammy takes the videotape with him. Is it okay or not okay for Sammy to take the videotape? How okay or not okay is it?</p>", name: 'Movie_nondigital'},
+];
+
+var question_trial = {
+  type: jsPsychSurveyLikert,
+  questions: [
+    {
+      prompt: jsPsych.timelineVariable('question'),
+      labels: likert_scale,
+      required: true
+    }
+  ]
+};
+
+var open_ended = {
+  type: jsPsychSurveyText,
+  questions: [
+    {prompt: 'What made you think so? Describe your reason below.'}
+  ]
+}
+
+var question_procedure = {
+  timeline: [question_trial, open_ended],
+  timeline_variables: questions_list,
+  randomize_order: true 
+};
+
+timeline.push(question_procedure);
+
+ // start the experiment
+ jsPsych.run(timeline);
+
+ </script>
+</html>
