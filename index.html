@@ -6,6 +6,9 @@
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.1.3"></script> 
   <script src="https://unpkg.com/@jspsych/plugin-survey-text@2.1.1"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey@4.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@1.0.3"></script> 
+<link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@4.0.0/css/survey.min.css">
   <!-- the DataPipe extension, which saves our data -->
   <script src="https://unpkg.com/@jspsych/extension-pipe@0.2.0"></script>
   <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
@@ -57,53 +60,109 @@
   };
   timeline.push(instructions);
 
-  //define likert scale 
-var likert_scale = [
-  "Totally not okay", 
-  "Not okay", 
-  "In between", 
-  "Okay", 
-  "Totally okay"
+  // Define questions items
+var question_items = [
+  { id: 'book_digital', prompt: '<p>Jordan finds that an e-book was saved on a shared computer in the room. Jordan is the only person in the room. No one will know if Jordan downloads the e-book on his laptop. Is it okay or not okay for Jordan to download the e-book? How okay or not okay is it?</p>' },
+  { id: 'photo_digital', prompt: '<p>Peyton finds that a photo of nature was saved on a shared computer in the room. Peyton is the only person in the room. No one will know if Peyton downloads the photo on his laptop. Is it okay or not okay for Peyton to download the photo? How okay or not okay is it?</p>' },
+  { id: 'game_digital', prompt: '<p>Robin finds that a fishing game was saved on a shared computer in the room. Robin is the only person in the room. No one will know if Robin downloads the fishing game on her laptop. Is it okay or not okay for Robin to download the fishing game? How okay or not okay is it?</p>' },
+  { id: 'drawing_nondigital', prompt: '<p>Blake finds that a drawing on a page from a sketchbook was left next to a shared computer in the room. Blake is the only person in the room. No one will know if Blake takes the drawing with her. Is it okay or not okay for Blake to take the drawing? How okay or not okay is it?</p>' },
+  { id: 'music_nondigital', prompt: '<p>Jesse finds that a music CD was left next to a shared computer in the room. Jesse is the only person in the room. No one will know if Jesse takes the music CD with her. Is it okay or not okay for Jesse to take the music CD? How okay or not okay is it?</p>' },
+  { id: 'movie_nondigital', prompt: '<p>Sammy finds that a videotape of a movie was left next to a shared computer in the room. Sammy is the only person in the room. No one will know if Sammy takes the videotape with him. Is it okay or not okay for Sammy to take the videotape? How okay or not okay is it?</p>' }
 ];
 
-//sample stimuli with likert scale
-var questions_list = [
-    {question: "<p>Jordan finds that an e-book was saved on a shared computer in the room. Jordan is the only person in the room. No one will know if Jordan downloads the e-book on his laptop. Is it okay or not okay for Jordan to download the e-book? How okay or not okay is it?</p>", name: 'Book_digital'},
-    {question: "<p>Peyton finds that a photo of nature was saved on a shared computer in the room. Peyton is the only person in the room. No one will know if Peyton downloads the photo on his laptop. Is it okay or not okay for Peyton to download the photo? How okay or not okay is it?</p>", name: 'Photo_digital'},
-    {question: "<p>Robin finds that a fishing game was saved on a shared computer in the room. Robin is the only person in the room. No one will know if Robin downloads the fishing game on her laptop. Is it okay or not okay for Robin to download the fishing game? How okay or not okay is it?</p>", name: 'Game_digital'},
-    {question: "<p>Blake finds that a drawing on a page from a sketchbook was left next to a shared computer in the room. Blake is the only person in the room. No one will know if Blake takes the drawing with her. Is it okay or not okay for Blake to take the drawing? How okay or not okay is it?</p>", name: 'Drawing_nondigital'},
-    {question: "<p>Jesse finds that a music CD was left next to a shared computer in the room. Jesse is the only person in the room. No one will know if Jesse takes the music CD with her. Is it okay or not okay for Jesse to take the music CD? How okay or not okay is it?</p>", name: 'Music_nondigital'},
-    {question: "<p>Sammy finds that a videotape of a movie was left next to a shared computer in the room. Sammy is the only person in the room. No one will know if Sammy takes the videotape with him. Is it okay or not okay for Sammy to take the videotape? How okay or not okay is it?</p>", name: 'Movie_nondigital'},
-];
+// Shuffle the question items
+var shuffledQuestions = jsPsych.randomization.shuffle(question_items);
 
-var question_trial = {
-  type: jsPsychSurveyLikert,
-  questions: [
-    {
-      prompt: jsPsych.timelineVariable('question'),
-      labels: likert_scale,
-      required: true
-    }
-  ]
-};
+// Map each item to a survey-html-form trial
+var surveyTimeline = shuffledQuestions.map(function(item) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
+    <style>
+        .preamble {
+            font-size: 18px;
+            line-height: 1.5;
+            text-align: center;       /* Centers text inside the container */
+            max-width: 60%;           /* Reduces content width to create larger side margins */
+            margin: 40px auto;        /* Adds vertical margin (40px) and centers horizontally (auto) */
+            padding: 20px;            /* Adds inner spacing if needed */
+        }
+    </style>
+    <div class="preamble">
+      <p>${item.prompt}</p>
+    </div>`,
+    html: `
+     <!-- Custom CSS to control the button layouts -->
+    <style>
+      .likert-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 600px;
+        margin: 30px auto;
+      }
+      .likert-option {
+        display: flex;
+        flex-direction: column; /* Stacks the button over the text */
+        align-items: center;    /* Centers the button horizontally over the text */
+        cursor: pointer;
+        width: 80px;            /* Gives spacing room for labels */
+      }
+      .likert-option input {
+        margin-bottom: 8px;     /* Space between the button and the text underneath */
+        cursor: pointer;
+      }
+      .likert-label {
+        font-size: 14px;
+        text-align: center;
+        line-height: 1.2;
+      }
+    </style>
 
-var open_ended = {
-  type: jsPsychSurveyText,
-  questions: [
-    {prompt: 'What made you think so? Describe your reason below.'}
-  ]
-}
+    <!-- The Flexbox Form container --> 
+    <div class="likert-container">
+      
+      <label class="likert-option">
+        <input type="radio" name="okayness" value="-2" required />
+        <span class="likert-label">Totally not okay</span>
+      </label>
 
-var question_procedure = {
-  timeline: [question_trial, open_ended],
-  timeline_variables: questions_list,
-  randomize_order: true 
-};
+      <label class="likert-option">
+        <input type="radio" name="okayness" value="-1" required/>
+        <span class="likert-label">Not okay</span>
+      </label>
 
-timeline.push(question_procedure);
+      <label class="likert-option">
+        <input type="radio" name="okayness" value="0" required/>
+        <span class="likert-label">In between</span>
+      </label>
+
+      <label class="likert-option">
+        <input type="radio" name="okayness" value="1" required/>
+        <span class="likert-label">Okay</span>
+      </label>
+
+      <label class="likert-option">
+        <input type="radio" name="okayness" value="2" required />
+        <span class="likert-label">Totally okay</span>
+      </label>
+
+      </div>
+      <div>
+        <label for="${item.id}_open">What made you think so? Describe your reason below.</label><br>
+        <textarea name="${item.id}_open" rows="3" cols="40" required></textarea>
+      </div>
+    `,
+    button_label: 'Next'
+  };
+});
+
+// 4. Push to main timeline
+timeline.push(surveyTimeline);
 
  // start the experiment
  jsPsych.run(timeline);
 
  </script>
 </html>
+
