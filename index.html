@@ -163,15 +163,15 @@ var question_items = [
           .likert-label { font-size: 14px; text-align: center; line-height: 1.2; }
         </style>
         <div class="likert-container">
-          <label class="likert-option"><input type="radio" name="okayness" value="-2"  /><span class="likert-label">Totally not okay</span></label>
-          <label class="likert-option"><input type="radio" name="okayness" value="-1"  /><span class="likert-label">Not okay</span></label>
-          <label class="likert-option"><input type="radio" name="okayness" value="0"  /><span class="likert-label">Neutral</span></label>
-          <label class="likert-option"><input type="radio" name="okayness" value="1"  /><span class="likert-label">Okay</span></label>
-          <label class="likert-option"><input type="radio" name="okayness" value="2"  /><span class="likert-label">Totally okay</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="-2" required /><span class="likert-label">Totally not okay</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="-1" required /><span class="likert-label">Not okay</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="0" required /><span class="likert-label">Neutral</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="1" required /><span class="likert-label">Okay</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="2" required /><span class="likert-label">Totally okay</span></label>
         </div>
         <div>
           <label for="open_response">What made you think so? Describe your reason below.</label><br>
-          <textarea id="open_response" name="open_response" rows="3" cols="40" ></textarea>
+          <textarea id="open_response" name="open_response" rows="3" cols="40" required></textarea>
         </div>`,
       button_label: 'Next',
       on_finish: function(data) {
@@ -204,11 +204,11 @@ var question_items = [
         .likert-label { font-size: 14px; text-align: center; line-height: 1.2; }
       </style>
       <div class="likert-container">
-        <label class="likert-option"><input type="radio" name="attention_check" value="-2"  /><span class="likert-label">Totally not okay</span></label>
-        <label class="likert-option"><input type="radio" name="attention_check" value="-1"  /><span class="likert-label">Not okay</span></label>
-        <label class="likert-option"><input type="radio" name="attention_check" value="0"  /><span class="likert-label">Neutral</span></label>
-        <label class="likert-option"><input type="radio" name="attention_check" value="1"  /><span class="likert-label">Okay</span></label>
-        <label class="likert-option"><input type="radio" name="attention_check" value="2"  /><span class="likert-label">Totally okay</span></label>
+        <label class="likert-option"><input type="radio" name="attention_check" value="-2" required /><span class="likert-label">Totally not okay</span></label>
+        <label class="likert-option"><input type="radio" name="attention_check" value="-1" required /><span class="likert-label">Not okay</span></label>
+        <label class="likert-option"><input type="radio" name="attention_check" value="0" required /><span class="likert-label">Neutral</span></label>
+        <label class="likert-option"><input type="radio" name="attention_check" value="1" required /><span class="likert-label">Okay</span></label>
+        <label class="likert-option"><input type="radio" name="attention_check" value="2" required /><span class="likert-label">Totally okay</span></label>
       </div>`,
     button_label: 'Next',
     on_finish: function(data) {
@@ -269,15 +269,15 @@ var question_items = [
           .likert-label { font-size: 14px; text-align: center; line-height: 1.2; }
         </style>
         <div class="likert-container">
-          <label class="likert-option"><input type="radio" name="okayness" value="-2"  /><span class="likert-label">Totally not okay</span></label>
-          <label class="likert-option"><input type="radio" name="okayness" value="-1"  /><span class="likert-label">Not okay</span></label>
-          <label class="likert-option"><input type="radio" name="okayness" value="0"  /><span class="likert-label">Neutral</span></label>
-          <label class="likert-option"><input type="radio" name="okayness" value="1"  /><span class="likert-label">Okay</span></label>
-          <label class="likert-option"><input type="radio" name="okayness" value="2"  /><span class="likert-label">Totally okay</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="-2" required /><span class="likert-label">Totally not okay</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="-1" required /><span class="likert-label">Not okay</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="0" required /><span class="likert-label">Neutral</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="1" required /><span class="likert-label">Okay</span></label>
+          <label class="likert-option"><input type="radio" name="okayness" value="2" required /><span class="likert-label">Totally okay</span></label>
         </div>
         <div>
           <label for="open_response">What made you think so? Describe your reason below.</label><br>
-          <textarea id="open_response" name="open_response" rows="3" cols="40" ></textarea>
+          <textarea id="open_response" name="open_response" rows="3" cols="40" required></textarea>
         </div>`,
       button_label: 'Next',
       on_finish: function(data) {
@@ -302,7 +302,7 @@ var question_items = [
       <div class="preamble"><p>We want to make sure that you are answering honestly. Please answer the following question truthfully. Your answer will not impact your ability to receive credit for this study.</p></div>`,
     html: `
       <label for="honesty_response">Did you use AI tools (like ChatGPT) to help you answer questions in this study at any point?</label><br>
-      <select id="honesty_response" name="honesty_response">
+      <select id="honesty_response" name="honesty_response" required>
         <option value="">Select an option</option>
         <option value="yes">Yes</option>
         <option value="no">No</option>
