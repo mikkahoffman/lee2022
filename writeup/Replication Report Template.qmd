@@ -141,7 +141,8 @@ library(effectsize)
   filter(attention_check_response != 1 | honesty_response != "no")
 
  data <- data |> 
-   filter(subject_id != "wlrt2r0w0r") #exclude the participant that failed checks
+   filter(!subject_id %in% participant_exclusions_incomplete$subject_id, # exclude using the lists above (review2)
+          !subject_id %in% participant_exclusions_checks$subject_id) #exclude participants that failed checks
 
 #### tidy up dataframe - select only relevant columns and responses
  data <- data |> 
