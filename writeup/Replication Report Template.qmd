@@ -120,15 +120,23 @@ library(effectsize)
 
 #### Import all data
 #### get a vector of all csv file paths in data folder
- files <- list.files(path = "/Users/m5hoffman/Documents/GitHub/lee2022/data/raw/pilot_a_data", pattern = "\\.csv$", full.names = TRUE)
+ files <- list.files(path = "/Users/m5hoffman/Documents/GitHub/lee2022/data/raw/pilot_b_data", pattern = "\\.csv$", full.names = TRUE)
 #### read and combine into one dataframe
  data <- read_csv(files)
  
  # check how many participants were in each condition/responses for each item here and visualize data
  hist(data$rating)
- table(data$item_id) 
  table(data$condition)
  
+ #look at total time participants took
+ time <- data |> 
+   filter(trial_index==13) |> 
+   select(subject_id, time_elapsed) |> 
+   mutate(time_minutes = (time_elapsed/1000)/60)
+ time_summary <- time |> 
+   summarise(mean = mean(time_minutes),
+             sd = sd(time_minutes))
+     
  #### Data exclusion / filtering
 
 # check for attention check, AI check answers, and participants who didn't rate all scenarios and exclude those who didn't pass
@@ -158,6 +166,11 @@ data_replication <- data |>
 
 data_exploratory <- data |> 
   select(-justification)
+
+#check number of responses to each item
+item_counts <- data_replication |> 
+  group_by(item_id) |> 
+  count(item_id)
 
 # create another data frame for justifications, including subject ID, format, item, category, answer, and code
 # import data after hand coding
@@ -206,8 +219,6 @@ ggplot(data = data_replication_summary, aes(x=format_type, y=mean))+
   theme_classic()+
   theme(legend.position = "none")+
   labs(x="Format Type", y="Rating", title = "Evaluations in Adults")
-
-#insert original figure
 ```
 
 ### Exploratory analyses
