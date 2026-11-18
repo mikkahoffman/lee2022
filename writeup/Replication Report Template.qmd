@@ -117,15 +117,19 @@ library(lme4)
 library(glmmTMB)
 library(readr)
 library(effectsize)
+library(here)
+library(assertthat)
+
+#set here
+here::i_am("writeup/Replication Report Template.qmd")
 
 #### Import all data
 #### get a vector of all csv file paths in data folder
- files <- list.files(path = "/Users/m5hoffman/Documents/GitHub/lee2022/data/raw/pilot_b_data", pattern = "\\.csv$", full.names = TRUE)
+ files <- list.files(path = here("data/raw/full_data"), pattern = "\\.csv$", full.names = TRUE)
 #### read and combine into one dataframe
  data <- read_csv(files)
  
- # check how many participants were in each condition/responses for each item here and visualize data
- hist(data$rating)
+ # check how many participants were in each condition
  table(data$condition)
  
  #look at total time participants took
@@ -156,6 +160,7 @@ library(effectsize)
  data <- data |> 
    select(subject_id, item_id, item, format_type, rating, justification) |> #select only relevant variables
     filter(!is.na(rating)) 
+ data_rows <- nrow(data)
 #### Prepare data for analysis
 # create one data frame for ratings with 6 original vignettes, and one with all 8 vignettes
  
@@ -163,9 +168,14 @@ data_replication <- data |>
   filter(item!="kidphoto",
          item!="adultphoto") |> 
   select(-justification)
+replication_rows <-nrow(data_replication)
+
+assert_that((data_rows/8) == (replication_rows/6)) #check that number of rows is correct
 
 data_exploratory <- data |> 
   select(-justification)
+
+assert_that(is.double(data_exploratory$rating))
 
 #check number of responses to each item
 item_counts <- data_replication |> 
@@ -174,6 +184,65 @@ item_counts <- data_replication |>
 
 # create another data frame for justifications, including subject ID, format, item, category, answer, and code
 # import data after hand coding
+```
+
+```{r}
+#sanity check visualizations of data
+#number of responses per item
+ggplot(data=data_replication)+
+  geom_histogram(aes(x=item_id), alpha=0.5, stat="count")+
+  labs(x="Question Name", y = "Reponse Count", title = "Number of responses for each question")+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+  
+
+#jitter plot by item and format
+ggplot(data = data_replication, aes(y=rating, x=item))+
+  geom_jitter(aes(color=format_type))+
+  stat_summary(fun = "mean",
+               geom = "point",
+               size=3)+
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar")+
+  theme_classic()+
+  facet_grid(~format_type)+
+  labs(x = "Item", y = "Rating", title = "Ratings by Item and Format")+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+#jitter plot by item and format - exploratory data included
+ggplot(data = data_exploratory, aes(y=rating, x=item))+
+  geom_jitter(aes(color=format_type))+
+  stat_summary(fun = "mean",
+               geom = "point",
+               size=3)+
+  stat_summary(fun.data = "mean_cl_boot",
+               geom = "errorbar")+
+  theme_classic()+
+  facet_grid(~format_type)+
+  labs(x = "Item", y = "Rating", title = "Ratings by Item and Format (Exploratory vignettes included)")+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+#look at data by item
+ggplot(data=data_replication, aes(x=format_type, y=rating))+
+  geom_jitter(aes(color=format_type), alpha = 0.5)+
+  stat_summary(fun = "mean", geom = "point", size = 2)+
+  stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", width = 0.12)+
+  facet_wrap(~item)+
+  geom_hline(yintercept = 0, linetype = "dashed")+
+  theme(legend.position = "none")+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))+
+  labs(x="Format Type", y="Rating", title = "Ratings by Item and Format")+
+  scale_x_discrete(labels = c(
+    "digital" = "Digital",
+    "nondigital" = "Physical"))+
+    theme(legend.position = "none")
+  
+  
+
+
 ```
 
 ### Confirmatory analysis
@@ -204,8 +273,14 @@ doca.adult.m2 <- update(doca.adult.full, ~ . -format_type:item -item)
 ```
 
 *Side-by-side graph with original graph is ideal here* 
+```{r orig-fig}
+library(knitr)
+knitr::include_graphics(here('writeup','lee2022_figure2A.png'))
+```
+
 
 ```{r}
+#reproducing visualization
 library(tidyboot)
 data_replication_summary <- data_replication |> 
   group_by(format_type) |>
@@ -213,12 +288,30 @@ data_replication_summary <- data_replication |>
 
 ggplot(data = data_replication_summary, aes(x=format_type, y=mean))+
   geom_col(aes(fill=format_type))+
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper)) +
-  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), width=0.12) +
   ylim(-2, 2)+
   theme_classic()+
   theme(legend.position = "none")+
-  labs(x="Format Type", y="Rating", title = "Evaluations in Adults")
+  scale_fill_grey()+
+  labs(x="Format Type", y="Rating", title = "Evaluations in Adults")+
+  scale_x_discrete(labels = c(
+    "digital" = "Digital",
+    "nondigital" = "Physical"))
+
+# attempt at an "improved" version
+ggplot(data=data_replication, aes(x=format_type, y=rating))+
+  geom_jitter(alpha=0.5, aes(color=format_type))+
+  stat_summary(fun = "mean", geom = "point", size = 3)+
+  stat_summary(fun.data = "mean_cl_boot", geom="errorbar", width=0.2)+
+  theme_classic()+
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  ylim(-2, 2)+
+  labs(x = "Format Type", y = "Rating", title = "Evaluations in Adults")+
+  theme(legend.position = "none")+
+    scale_x_discrete(labels = c(
+    "digital" = "Digital",
+    "nondigital" = "Physical"))
+  
 ```
 
 ### Exploratory analyses
