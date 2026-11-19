@@ -302,16 +302,17 @@ ggplot(data = data_replication_summary, aes(x=format_type, y=mean))+
 ggplot(data=data_replication, aes(x=format_type, y=rating))+
   geom_jitter(alpha=0.5, aes(color=format_type))+
   stat_summary(fun = "mean", geom = "point", size = 3)+
-  stat_summary(fun.data = "mean_cl_boot", geom="errorbar", width=0.2)+
+  stat_summary(fun.data = "mean_cl_boot", geom="errorbar", width=0.2, aes(color=format_type))+
   theme_classic()+
   geom_hline(yintercept = 0, linetype = "dashed") +
-  ylim(-2, 2)+
-  labs(x = "Format Type", y = "Rating of how okay it is to take the item", title = "Evaluations in Adults")+
+  labs(x = "Format Type", y = "How okay it is to take the item?", title = "Evaluations in Adults")+
   theme(legend.position = "none")+
     scale_x_discrete(labels = c(
     "digital" = "Digital",
-    "nondigital" = "Physical"))
-  
+    "nondigital" = "Physical"))+
+  scale_y_continuous(breaks = c(-2, -1, 0, 1, 2),
+    labels = c("-2 (Totally Not Okay)", "-1", "0 (Neutral)", "1", "2 (Totally Okay)"))
+
 ```
 
 ### Exploratory analyses
