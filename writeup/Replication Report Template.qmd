@@ -129,6 +129,10 @@ here::i_am("writeup/Replication Report Template.qmd")
 #### read and combine into one dataframe
  data <- read_csv(files)
  
+ # i ran into an issue with renv in the code above and got this error message: Error in base::nchar(wide_chars$test, type = "width") : 
+#  cannot open file '/Users/caqing/Documents/GitHub/lee2022/renv/library/.renv-staging/1/cli/R/sysdata.rdb': No such file or directory
+ # the issue seems to be with the cli package so i had to manually install it—i would double check with someone else to see if they run into the same issue
+ 
  # check how many participants were in each condition
  table(data$condition)
  
