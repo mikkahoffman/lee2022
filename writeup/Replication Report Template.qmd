@@ -194,6 +194,12 @@ ggplot(data=data_replication)+
   labs(x="Question Name", y = "Reponse Count", title = "Number of responses for each question")+
   theme_classic()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+ggplot(data=data_replication)+
+  geom_histogram(aes(x=item), alpha=0.5, stat="count")+
+  labs(x="Question Name", y = "Reponse Count", title = "Number of responses for each item")+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
   
 
 #jitter plot by item and format
@@ -224,7 +230,7 @@ ggplot(data = data_exploratory, aes(y=rating, x=item))+
   theme(legend.position = "none")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 
-#look at data by item
+#look at data by item and format
 ggplot(data=data_replication, aes(x=format_type, y=rating))+
   geom_jitter(aes(color=format_type), alpha = 0.5)+
   stat_summary(fun = "mean", geom = "point", size = 2)+
@@ -239,10 +245,23 @@ ggplot(data=data_replication, aes(x=format_type, y=rating))+
     "digital" = "Digital",
     "nondigital" = "Physical"))+
     theme(legend.position = "none")
-  
-  
 
-
+#look at data by item and format (include exploratory)
+ggplot(data=data_exploratory, aes(x=format_type, y=rating))+
+  geom_jitter(aes(color=format_type), alpha = 0.5)+
+  stat_summary(fun = "mean", geom = "point", size = 2)+
+  stat_summary(fun.data = "mean_cl_boot", geom = "errorbar", width = 0.12)+
+  facet_wrap(~item)+
+  geom_hline(yintercept = 0, linetype = "dashed")+
+  theme(legend.position = "none")+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))+
+  labs(x="Format Type", y="Rating", title = "Ratings by Item and Format (Exploratory vignettes included)")+
+  scale_x_discrete(labels = c(
+    "digital" = "Digital",
+    "nondigital" = "Physical"))+
+    theme(legend.position = "none")
+  
 ```
 
 ### Confirmatory analysis
