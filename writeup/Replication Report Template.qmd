@@ -125,7 +125,7 @@ here::i_am("writeup/Replication Report Template.qmd")
 
 #### Import all data
 #### get a vector of all csv file paths in data folder
- files <- list.files(path = here("data/raw/full_data"), pattern = "\\.csv$", full.names = TRUE)
+ files <- list.files(path = here("data/full_data"), pattern = "\\.csv$", full.names = TRUE)
 #### read and combine into one dataframe
  data <- read_csv(files)
  
@@ -306,7 +306,7 @@ ggplot(data=data_replication, aes(x=format_type, y=rating))+
   theme_classic()+
   geom_hline(yintercept = 0, linetype = "dashed") +
   ylim(-2, 2)+
-  labs(x = "Format Type", y = "Rating", title = "Evaluations in Adults")+
+  labs(x = "Format Type", y = "Rating of how okay it is to take the item", title = "Evaluations in Adults")+
   theme(legend.position = "none")+
     scale_x_discrete(labels = c(
     "digital" = "Digital",
