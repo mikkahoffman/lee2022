@@ -59,3 +59,4 @@ rsconnect/
 # *.html
 writeup/Replication Report Template.html
 .DS_Store
+.Rproj.user
